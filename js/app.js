@@ -205,6 +205,7 @@ const closeLibraryBtn = document.querySelector(".close-library");
 saveBtn.addEventListener("click", openPalette);
 closeSave.addEventListener("click", removePalette);
 submitSave.addEventListener("click", savePalette);
+
 libraryBtn.addEventListener("click", openLibrary);
 closeLibraryBtn.addEventListener("click", closeLibrary);
 
@@ -237,9 +238,10 @@ function savePalette(e) {
 
   const paletteObj = { name, colors, nr: paletteNr };
   savedPalettes.push(paletteObj);
-  console.log(savedPalette);
+
   savetoLocal(paletteObj);
   saveInput.value = "";
+
   const palette = document.createElement("div");
   palette.classList.add("custom-palette");
   const title = document.createElement("h4");
@@ -254,13 +256,13 @@ function savePalette(e) {
   const paletteBtn = document.createElement("button");
   paletteBtn.classList.add("pick-palette-btn");
   paletteBtn.classList.add(paletteObj.nr);
-  paletteBtn.innerText = "Select ";
+  paletteBtn.innerText = "Select";
 
   paletteBtn.addEventListener("click", (e) => {
     closeLibrary();
     const paletteIndex = e.target.classList[1];
     initialColors = [];
-    savedPalette[paletteIndex].colors.forEach((color, index) => {
+    savedPalettes[paletteIndex].colors.forEach((color, index) => {
       initialColors.push(color);
       colorDivs[index].style.backgroundColor = color;
       const text = colorDivs[index].children[0];
@@ -300,6 +302,7 @@ function getLocal() {
     localPalettes = [];
   } else {
     const paletteObjects = JSON.parse(localStorage.getItem("palettes"));
+
     savedPalettes = [...paletteObjects];
     paletteObjects.forEach((paletteObj) => {
       const palette = document.createElement("div");
@@ -308,7 +311,7 @@ function getLocal() {
       title.innerText = paletteObj.name;
       const preview = document.createElement("div");
       preview.classList.add("small-preview");
-      paletteObj.color.forEach((smallColor) => {
+      paletteObj.colors.forEach((smallColor) => {
         const smallDiv = document.createElement("div");
         smallDiv.style.backgroundColor = smallColor;
         preview.appendChild(smallDiv);
@@ -316,13 +319,13 @@ function getLocal() {
       const paletteBtn = document.createElement("button");
       paletteBtn.classList.add("pick-palette-btn");
       paletteBtn.classList.add(paletteObj.nr);
-      paletteBtn.innerText = "Select ";
+      paletteBtn.innerText = "Select";
 
       paletteBtn.addEventListener("click", (e) => {
         closeLibrary();
         const paletteIndex = e.target.classList[1];
         initialColors = [];
-        savedPalettes[paletteIndex].colors.forEach((color, index) => {
+        paletteObjects[paletteIndex].colors.forEach((color, index) => {
           initialColors.push(color);
           colorDivs[index].style.backgroundColor = color;
           const text = colorDivs[index].children[0];
