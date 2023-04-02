@@ -3,6 +3,10 @@ const generateBtn = document.querySelectorAll(".generate");
 const sliders = document.querySelectorAll('input[type="range"]');
 const currentHexes = document.querySelectorAll(".color h2");
 const popup = document.querySelector(".copy-container");
+const adjustButton = document.querySelectorAll(".adjust");
+const lockButton = document.querySelectorAll(".lock");
+const closeAdjustments = document.querySelectorAll(".close-adjustment");
+const sliderContainers = document.querySelectorAll(".sliders");
 let initialColors;
 
 sliders.forEach((slider) => {
@@ -22,6 +26,16 @@ popup.addEventListener("transitionend", () => {
   const popupBox = popup.children[0];
   popupBox.classList.remove("active");
   popup.classList.remove("active");
+});
+adjustButton.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    openAdjustmentPanel(index);
+  });
+});
+closeAdjustments.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    closeAdjustmentsPanel(index);
+  });
 });
 function generateHex() {
   // const letters = "0123456789ABCDEF";
@@ -55,13 +69,19 @@ function randomColors() {
   });
 
   resetInputs();
+
+  adjustButton.forEach((button, index) => {
+    checkTextContrast(initialColors[index], button);
+    console.log(button);
+    checkTextContrast(initialColors[index], lockButton[index]);
+  });
 }
 function checkTextContrast(color, text) {
   const luminance = chroma(color).luminance();
   if (luminance > 0.5) {
     text.style.color = "black";
   } else {
-    text.style.color = "whiite";
+    text.style.color = "white";
   }
 }
 
@@ -145,5 +165,14 @@ function copyToClipboard(hex) {
   const popupBox = popup.children[0];
   popupBox.classList.add("active");
   popup.classList.add("active");
+}
+function openAdjustmentPanel(index) {
+  sliderContainers[index].classList.toggle("active");
+  console.log(index);
+}
+function closeAdjustmentsPanel(index) {
+  if (sliderContainers[index].classList.contains("active")) {
+    sliderContainers[index].classList.remove("active");
+  }
 }
 randomColors();
