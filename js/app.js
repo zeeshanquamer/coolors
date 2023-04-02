@@ -1,5 +1,5 @@
 const colorDivs = document.querySelectorAll(".color");
-const generateBtn = document.querySelectorAll(".generate");
+const generateBtn = document.querySelector(".generate");
 const sliders = document.querySelectorAll('input[type="range"]');
 const currentHexes = document.querySelectorAll(".color h2");
 const popup = document.querySelector(".copy-container");
@@ -9,6 +9,19 @@ const closeAdjustments = document.querySelectorAll(".close-adjustment");
 const sliderContainers = document.querySelectorAll(".sliders");
 let initialColors;
 
+lockButton.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    colorDivs[index].classList.toggle("locked");
+    if (button.children[0].classList.contains("fa-lock-open")) {
+      button.children[0].classList.remove("fa-lock-open");
+      button.children[0].classList.add("fa-lock");
+    } else {
+      button.children[0].classList.add("fa-lock-open");
+      button.children[0].classList.remove("fa-lock");
+    }
+  });
+});
+generateBtn.addEventListener("click", randomColors);
 sliders.forEach((slider) => {
   slider.addEventListener("input", hslControls);
 });
@@ -52,7 +65,12 @@ function randomColors() {
   colorDivs.forEach((div, index) => {
     const hexText = div.children[0];
     const randomColor = generateHex();
-    initialColors.push(chroma(randomColor).hex());
+    if (div.classList.contains("locked")) {
+      initialColors.push(hexText.innerText);
+      return;
+    } else {
+      initialColors.push(chroma(randomColor).hex());
+    }
     div.style.backgroundColor = randomColor;
     hexText.innerText = randomColor;
 
