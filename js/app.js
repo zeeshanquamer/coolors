@@ -8,6 +8,7 @@ const lockButton = document.querySelectorAll(".lock");
 const closeAdjustments = document.querySelectorAll(".close-adjustment");
 const sliderContainers = document.querySelectorAll(".sliders");
 let initialColors;
+let savedPalette = [];
 
 lockButton.forEach((button, index) => {
   button.addEventListener("click", () => {
@@ -78,7 +79,7 @@ function randomColors() {
 
     const color = chroma(randomColor);
     const sliders = div.querySelectorAll(".sliders input");
-    console.log(sliders);
+    // console.log(sliders);
     const hue = sliders[0];
     const brightness = sliders[1];
     const saturation = sliders[2];
@@ -90,7 +91,7 @@ function randomColors() {
 
   adjustButton.forEach((button, index) => {
     checkTextContrast(initialColors[index], button);
-    console.log(button);
+    // console.log(button);
     checkTextContrast(initialColors[index], lockButton[index]);
   });
 }
@@ -192,5 +193,32 @@ function closeAdjustmentsPanel(index) {
   if (sliderContainers[index].classList.contains("active")) {
     sliderContainers[index].classList.remove("active");
   }
+}
+const saveBtn = document.querySelector(".save");
+const submitSave = document.querySelector(".submit-save");
+const closeSave = document.querySelector(".close-save");
+const saveContainer = document.querySelector(".save-container");
+const saveInput = document.querySelector(".save-container input");
+
+saveBtn.addEventListener("click", openPalette);
+closeSave.addEventListener("click", removePalette);
+function openPalette(e) {
+  const popup = saveContainer.children[0];
+  saveContainer.classList.add("active");
+  popup.classList.add("active");
+}
+function removePalette(e) {
+  const popup = saveContainer.children[0];
+  saveContainer.classList.remove("active");
+  popup.classList.remove("active");
+}
+function savPalette(e) {
+  saveContainer.classList.remove("active");
+  popup.classList.remove("active");
+  const name = saveInput.value;
+  const colors = [];
+  currentHexes.forEach((hex) => {
+    color.push(hex.innerText);
+  });
 }
 randomColors();
